@@ -1,0 +1,20 @@
+#!/bin/bash
+
+# Check each directory in the repository
+missing_readmes=0
+for dir in $(find . -type d -not -path './.git*'); do
+    if [ ! -f "$dir/README.md" ]; then
+        echo "Missing README.md in directory: $dir"
+        missing_readmes=1
+    fi
+done
+
+# Fail the commit if any README.md is missing
+if [ $missing_readmes -eq 1 ]; then
+    echo "Pre-commit hook failed: Ensure every directory has a README.md file."
+    exit 1
+fi
+
+echo "Pre-commit hook passed."
+exit 0
+
